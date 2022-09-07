@@ -17,7 +17,8 @@ class PieChartSample():
 
     def _timer_cb(self, event):
         msg = Float32()
-        msg.data = abs(math.sin(3.14 * self.count / 100.0))
+        # msg.data = abs(math.sin(3.14 * self.count / 100.0))
+        msg.data = math.sin(3.14 * self.count / 100.0)
         self.count = self.count + 1
         self.pub.publish(msg)
 
@@ -26,3 +27,4 @@ if __name__ == '__main__':
     rospy.init_node('piechart_sample')
     app = PieChartSample()
     rospy.spin()
+

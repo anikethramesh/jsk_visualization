@@ -37,7 +37,7 @@
 #include <rviz/uniform_string_stream.h>
 #include <rviz/display_context.h>
 #include <QPainter>
-
+// #include <ros/console.h>
 namespace jsk_rviz_plugins
 {
   LinearGaugeDisplay::LinearGaugeDisplay()
@@ -83,7 +83,7 @@ namespace jsk_rviz_plugins
       "max value, used only if auto scale is disabled",
       this, SLOT(updateMaxValue()));
     min_value_property_ = new rviz::FloatProperty(
-      "min value", 0.0,
+      "min value", -100.0,
       "min value, used only if auto scale is disabled",
       this, SLOT(updateMinValue()));
     fg_color_property_ = new rviz::ColorProperty(
@@ -243,13 +243,16 @@ namespace jsk_rviz_plugins
     //draw gauge
     if(vertical_gauge_)
     {
-        double normalised_value = std::min(std::max((double)data_, 0.0), max_value_)*(h-2*height_padding_)/max_value_;
+        // double normalised_value = std::min(std::max((double)data_, 0.0), max_value_)*(h-2*height_padding_)/max_value_;
+        double normalised_value = std::min((double)data_, max_value_)*(h-2*height_padding_)/max_value_;
         painter.fillRect(width_padding_, h-normalised_value-height_padding_, w-2*width_padding_, normalised_value, fg_color);
     }
     else
     {   
-        double normalised_value = std::min(std::max((double)data_, 0.0), max_value_)*(w-2*width_padding_)/max_value_;
-        painter.fillRect(width_padding_, height_padding_, normalised_value, h-(2*height_padding_), fg_color);
+        // double normalised_value = std::min(std::max((double)data_, 0.0), max_value_)*(w-2*width_padding_)/max_value_;
+        double normalised_value = std::min((double)data_, max_value_)*(w-2*width_padding_)/max_value_;
+        painter.fillRect(width_padding_, height_padding_, (w + normalised_value)*0.5, h-(2*height_padding_), fg_color);
+
     }
   
       // draw border
